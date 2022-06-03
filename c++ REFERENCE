@@ -1,0 +1,66 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <vector>
+#include <string>
+#include <chrono>
+using namespace std::chrono;
+using namespace std;
+
+
+// by using copy 
+void swap(vector<string> &x, vector<string> &y  )
+{
+ vector<string> t =x;
+ x = y;
+ y = t;
+}
+
+
+//if the RHS of the assignment operator is an rvalue, then if an object supports moving
+// we can automatically avoid copies
+//by using static cast
+void swap1(vector<string> &x, vector<string> &y  )
+{
+ vector<string> t = static_cast<vector<string> &&>(x);
+ x = static_cast<vector<string> &&>(y);
+ y = static_cast<vector<string> &&> (t);
+}
+
+void swap2(vector<string> &x, vector<string> &y  )
+{
+ vector<string> t = std::move(x);
+ x = std::move(y);
+ y = std::move(t);
+}
+
+
+
+
+int main() {
+    // Write C++ code here
+     vector<string> z { "asdfghjkl" };
+     vector<string> w { "zxcvbnm"};
+     
+     auto start = high_resolution_clock::now();
+     swap(z,w);
+     auto stop = high_resolution_clock::now();
+     
+     auto duration = duration_cast<microseconds>(stop - start);
+     cout << duration.count() << endl;
+     
+     auto start1 = high_resolution_clock::now();
+     swap1(z,w);
+     auto stop1 = high_resolution_clock::now();
+     
+     auto duration2 = duration_cast<microseconds>(stop1 - start1);
+     cout << duration2.count() << endl;
+     
+     auto start2 = high_resolution_clock::now();
+     swap2(z,w);
+     auto stop2 = high_resolution_clock::now();
+    
+     auto duration3 = duration_cast<microseconds>(stop2 - start2);
+     cout << duration3.count() << endl;
+      
+    return 0;
+}
