@@ -1,0 +1,57 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+template<typename comp >
+const comp & func(const vector<comp> & a)
+{
+    int x =0;
+    
+    for(int i =1; i < a.size(); i++)
+    {
+        if(a[x] < a[i])
+            x =i;
+    }
+    return a[x];
+}
+
+class IntCell
+{
+    public:
+    ~IntCell() = default;
+    IntCell(int x):sv{x}
+    {
+        
+    }
+    IntCell( const IntCell & rhs) = default;
+    IntCell( IntCell && rhs) = default;
+    IntCell & operator= (const IntCell & rhs) = default;
+    IntCell & operator= (IntCell && rhs) = default; 
+    
+    friend ostream &operator<<( ostream &output, const IntCell &D ) { 
+         output << "F : " ;
+         return output;            
+      }
+    //define for operator < which was used in func fn()
+    private:
+    int sv =0;
+};
+
+int main() {
+    // Write C++ code here
+    vector<int> arr{2,4};
+    vector<double> brr{3.0,4.9};
+    vector<string> srr{"abc","def"};
+    
+    vector<IntCell> v(4);
+ 
+    cout << func(arr) <<endl;
+    cout << func(brr) <<endl;
+    cout << func(srr) <<endl;
+    cout << func(v) <<endl;
+     
+    return 0;
+}
