@@ -27,11 +27,12 @@ class matrix
         {
             return arr[row];
         }
-        
-        vector<obj> & operator= (int row) 
+        /*vector<obj> & operator+ (vector<obj> & obj) 
         {
-            return arr[row] ;
+            return arr[row] + val;
         }
+        */
+    
         
         int numrows() const
         {
@@ -43,6 +44,10 @@ class matrix
             return numrows() ? arr[0].size():0;
         }
 
+        void insertc(int row, int col, int valc)
+        {
+            arr[row][col] += valc;
+        }
     private:
      vector<vector<obj>> arr;
 };
@@ -55,8 +60,7 @@ int main() {
     for(int i = 0; i < m.numrows(); i++)
         for(int j = 0 ; j < m.numcols();j++)
         {
-            m[i] = i+1;
-            m[i][j] = j+1;
+            m.insertc(i,j,j+1);
         }
     
     
