@@ -1,0 +1,72 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+template<typename obj>
+class matrix
+{
+    public:
+        matrix(int rows,int cols): arr(rows)
+        {
+            for(auto & thisrow : arr)
+                thisrow.resize(cols);
+        }
+        matrix(vector<vector<obj>> v): arr{v}
+        {}
+        matrix(vector<vector<obj>> && v): arr{move(v)}
+        {}
+        
+        const vector<obj> & operator[] (int row) const
+        {
+            return arr[row];
+        }
+        
+        vector<obj> & operator[] (int row) 
+        {
+            return arr[row];
+        }
+        
+        vector<obj> & operator= (int row) 
+        {
+            return arr[row] ;
+        }
+        
+        int numrows() const
+        {
+            return arr.size();
+        }
+        
+        int numcols() const
+        {
+            return numrows() ? arr[0].size():0;
+        }
+
+    private:
+     vector<vector<obj>> arr;
+};
+
+
+int main() {
+    // Write C++ code here
+    matrix<int> m{4,4};
+    
+    for(int i = 0; i < m.numrows(); i++)
+        for(int j = 0 ; j < m.numcols();j++)
+        {
+            m[i] = i+1;
+            m[i][j] = j+1;
+        }
+    
+    
+    for(int i = 0; i < m.numrows(); i++)
+    {
+        for(int j = 0 ; j < m.numcols();j++)
+        {
+          cout <<  m[i][j];
+        }
+        cout << endl;
+    }
+    return 0;
+}
