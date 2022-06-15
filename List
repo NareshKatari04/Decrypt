@@ -1,0 +1,138 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+template<typename obj>
+class List{
+private:
+    struct Node;
+public:
+    class const_itr;
+    class itr;
+    List();
+    List(const List &rhs);
+    List(List &&rhs);
+    ~List();
+    List & operator=(const List &rhs );
+    List & operator=(List &&rhs );
+    
+    
+    itr begin(){ return head->nxt;}
+    itr end(){ return tail;}
+   // const_itr begin(){ return {head->nxt};}
+    //const_itr end(){ return tail;}
+    int size() {return theSize;}
+    bool empty(){ return size() == 0 ; }
+    
+    void clear()
+    {
+        while ( !empty())
+        {
+            pop_front();
+        }
+    }
+    obj & front()
+    { return *begin();}
+    const obj & front() const
+    { return *begin();}
+    
+    obj & back()
+    { return *end();}
+    const obj & back() const
+    { return *end();}
+    
+    void push_front(obj & x)
+    { insert(begin(),x); }
+    
+    void push_front(const obj & x);
+    
+    void push_back(obj & x)
+    { insert(end(),x); }
+    
+    void push_back(const obj & x);
+    
+    void pop_front()
+    {  erase(begin());  }
+    
+    void pop_back()
+    {  erase(end());  }
+    
+    itr insert(itr it, const obj & x);
+    itr insert(itr it, obj &&x);
+    itr erase(itr it);
+    itr erase(itr from, itr to);
+    
+private:
+    int theSize;
+    Node *head;
+    Node *tail;
+    
+    void init();
+};
+
+template<typename obj>
+class List<obj>::const_itr
+{
+  public:
+  const_itr():cur{nullptr}
+  {}
+  const obj & operator*() const
+  {
+      return retrieve();
+  }
+  const obj & operator++() const
+  {
+      cur = cur->nxt;
+      return *this; 
+  }
+  //post fix
+  const obj & operator++(int) const
+  {
+     const_itr old = *this;
+     ++(*this);
+       return old; 
+  }
+  bool operator==( const const_itr &rhs) const
+  {
+      return cur == rhs.cur;
+  }
+  bool operator!=( const const_itr &rhs) const
+  {
+      return !(cur == rhs.cur);
+  }
+  
+  
+  protected:
+  Node *cur;
+  obj & retrieve() const
+  {
+      return cur->data;
+      
+  }
+  const_itr(Node *p):cur{p}
+  {}
+  friend class List<obj>;
+};
+
+template<typename obj>
+struct List<obj>::Node{
+  obj data;
+  Node *nxt;
+  Node *prv;
+  
+  Node(const obj & d = obj{}, Node *p = nullptr, Node *n = nullptr):data{d},prv{p},nxt{n}
+  {}
+  Node(obj &&d,Node *p = nullptr, Node *n = nullptr)
+  :data{d},prv{p},nxt{n}
+  {}
+};
+
+
+int main() {
+    // Write C++ code here
+    std::cout << "Hello world!";
+
+    return 0;
+}
