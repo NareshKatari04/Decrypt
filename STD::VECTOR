@@ -1,0 +1,150 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+
+#define Buffer 50
+
+template <typename obj>
+class Vector
+{
+public:
+    explicit Vector(int size = 0):size{size},capacity{size + Buffer}
+    {
+        arr = new obj[capacity];    
+    }
+    Vector(const Vector & rhs): size{rhs.size}, capacity{rhs.capacity}, arr{nullptr}
+    {
+     arr = new obj[capacity];
+      for(int k=0; k< size  ; k++)
+        arr[k] = rhs.arr[k];
+    }
+    Vector( Vector && rhs): size{rhs.size}, capacity{rhs.capacity}, arr{rhs.arr}
+    {
+        rhs.obj = nullptr;
+        rhs.size= 0;
+        rhs.capacity=0;
+    }
+    
+    Vector & operator=(const Vector &rhs )
+    {
+        Vector copy = rhs;
+        std::swap(*this,copy);
+        return *this;
+    }
+    Vector & operator=( Vector &&rhs )
+    {
+        std::swap(size,rhs.size);
+        std::swap(capacity,rhs.capacity);
+        std::swap(arr,rhs.arr);
+        
+        return *this;
+    }
+    ~Vector()
+    {
+        delete []arr;
+    }
+    
+    void resize(int newSize)
+    {
+        if(newSize > capacity)
+            reserve(newSize*2);
+        size = newSize;
+    }
+    void reserve(int val)
+    {
+        if(val < size)
+            return;
+        obj *newarr = new obj[val];
+        for(int i =0; i <size ; i++)
+            newarr[i] = std::move(arr[i]);
+    
+        capacity = val;
+        
+        std::swap(arr,newarr);
+        
+        delete []newarr;
+    }
+    
+    obj & operator[](int idx)
+    {
+        return arr[idx];
+    }
+    
+    const obj & operator[](int idx) const
+    {
+        return arr[idx];
+    }
+    
+    bool empty() const
+    {
+        return Size() == 0;
+    }
+    
+    int Size()
+    { return size;}
+    
+    int Capacity()
+    {
+        return capacity;
+    }
+    
+    void push_back(const obj &x)
+    {
+        if( size == capacity)
+            reserve(2*capacity +1);
+        
+        arr[size++] = x;
+    }
+    
+    void push_back(obj &&x)
+    {
+        if( size == capacity)
+            reserve(2*capacity +1);
+        
+        arr[size++] = std::move(x);
+    }
+    
+    void pop_back()
+    {
+        arr[size--] =0;
+    }
+    
+    const obj & back()
+    {return arr[size - 1];}
+    
+    typedef obj * iter;
+    typedef const obj * c_iter;
+    
+    iter begin()
+    { 
+        return &arr[0];
+    };
+    
+    c_iter begin() const
+    {
+        return &arr[0];
+    };
+    
+    iter end()
+    {
+        return &arr[Size()];
+    }
+    c_iter end() const
+    {
+        return &arr[ Size()];
+    }
+private:
+obj *arr;
+int size;
+int capacity;
+};
+
+int main() {
+    // Write C++ code here
+    std::cout << "Hello world!";
+
+    Vector<int> alpha;
+    
+   std:: cout << alpha.Size() << "  " <<alpha.Capacity() << std::endl;
+    return 0;
+}
